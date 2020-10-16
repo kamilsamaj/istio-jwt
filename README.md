@@ -8,9 +8,24 @@ kind create cluster --name istio-jwt
 yes | istioctl install
 ```
 
-* Start "httpbin" demo app
+* Install Grafana and Prometheus to see metrics for the control plane
+Each Istio component exposes an endpoint with metrics that are scraped by Prometheus.
+
 ```shell
 cd istio # Git submodule "https://github.com/istio/istio.git"
+
+kubectl apply -f ./samples/addons/prometheus.yaml
+kubectl apply -f ./samples/addons/grafana.yaml
+```
+
+After the deployment has finished, you can get to the dashboard with:
+```shell
+istioctl dashboard grafana
+```
+
+* Start "httpbin" demo app
+```shell
+# cd istio
 kubectl apply -f <(istioctl kube-inject -f samples/httpbin/httpbin.yaml)
 
 export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
