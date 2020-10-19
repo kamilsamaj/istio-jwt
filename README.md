@@ -9,6 +9,7 @@ yes | istioctl install
 ```
 
 * Install Grafana and Prometheus to see metrics for the control plane
+
 Each Istio component exposes an endpoint with metrics that are scraped by Prometheus.
 
 ```shell
@@ -21,6 +22,16 @@ kubectl apply -f ./samples/addons/grafana.yaml
 After the deployment has finished, you can get to the dashboard with:
 ```shell
 istioctl dashboard grafana
+```
+
+* Install Kiali dashboard to visualize your service mesh
+```
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.7/samples/addons/kiali.yaml
+```
+
+After the deployment has finished, you can get to the dashboard with:
+```shell
+istioctl dashboard kiali
 ```
 
 * Start "httpbin" demo app
@@ -52,7 +63,6 @@ spec:
     hosts:
     - "httpbin.example.com"
 EOF
-kubectl apply -f - <<EOF
 ```
 
 * Set what URL path prefixes are allowed through an Ingress VirtualService
